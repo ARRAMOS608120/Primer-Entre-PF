@@ -19,6 +19,13 @@ const router = require('./rutas.js')
 
 app.use('/api/carrito',router.routerCarrito)
 app.use('/api/productos',router.routerProductos)
+app.use(function (req, res, next) {
+    const rutaincorrecta= {error:-2, descripcion: `Ruta ${req.url} metodo ${req.method} no implementada`}
+    res.send(rutaincorrecta)
+    next();
+  });
+  
+  
 /* ------------------------------------------------------ */
 
 /* Server Listen */

@@ -7,9 +7,8 @@ const fs = require('fs')
     }
 
     async save (producto){
-        try{
-            const productos = await fs.promises.readFile (this.archivo, 'utf-8')
-            const productosJSON = JSON.parse(productos)
+
+            const productosJSON = await this.getAll()
 
             try{
                 if(productosJSON.length == 0){
@@ -25,41 +24,32 @@ const fs = require('fs')
                 return producto.id
         }catch (error){
             throw new Error (`Error al escribir el archivo: ${error}`)
-            }
-    }catch (error){
-        throw new Error (`Error al leer el archivo: ${error}`)
-    
-    }
-        
+            }    
     }
 
     async getByID (identificador){
-        try{ 
-            const productos = await fs.promises.readFile (this.archivo, 'utf-8')
-            const productosJSON = JSON.parse(productos)
+        
+            const productosJSON = await this.getAll()
 
             const indice = productosJSON.findIndex(producto=> producto.id ==identificador)
             if (indice != -1){
             return productosJSON[indice]
         }else{return null}
-        }catch (error){
-        throw new Error (`Error al leer el archivo: ${error}`)
-    }
+       
     }
     
     async getAll(){
         try{
             const productos = await fs.promises.readFile (this.archivo, 'utf-8')
-            return productos
+            return  JSON.parse(productos)
     } catch (error){
         throw new Error (`Error al leer el archivo: ${error}`)
     }
     }
 
   async deleteById (identificador){
-        try{ 
-            const productos = await fs.promises.readFile (this.archivo, 'utf-8')
-            const productosJSON = JSON.parse(productos)
+
+            const productosJSON = await this.getAll()
 
             const indice = productosJSON.findIndex(producto=> producto.id ==identificador)
           
@@ -69,15 +59,12 @@ const fs = require('fs')
             }catch (error){
                 throw new Error (`Error al escribir el archivo: ${error}`)
         }
-        }catch (error){
-            throw new Error (`Error al leer el archivo: ${error}`)
-    }
+        
     }
 
     async deleteAll(){
-        try{ 
-            const productos = await fs.promises.readFile (this.archivo, 'utf-8')
-            const productosJSON = JSON.parse(productos)
+      
+            const productosJSON = await this.getAll()
           
             try{
                 productosJSON.splice(0,productosJSON.length)
@@ -85,10 +72,7 @@ const fs = require('fs')
             }catch (error){
                 throw new Error (`Error al escribir el archivo: ${error}`)
         }
-        }catch (error){
-        throw new Error (`Error al leer el archivo: ${error}`)
-    }
-
+    
     }
 }
 

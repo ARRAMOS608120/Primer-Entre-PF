@@ -21,8 +21,8 @@ routerProductos.use(express.urlencoded({ extended: true }))
 routerProductos.get('/', async (req, res) => {
     const products= await contenedor.getAll()
     if (products.length==0){
-        res.render('mainformulario', { listadoProd: JSON.parse(products), listExists: false })
-    } else {res.render('mainformulario', { listadoProd: JSON.parse(products), listExists: true })}
+        res.render('mainformulario', { listadoProd: products, listExists: false })
+    } else {res.render('mainformulario', { listadoProd: products, listExists: true })}
 })
 
 routerProductos.get('/:id', async(req, res) => {
@@ -42,8 +42,7 @@ routerProductos.put('/:id', async (req, res) => {
     if(administrador!=false){
         const producto = req.body
         const id = parseInt(req.params.id)
-        const listaProd = await contenedor.getAll()
-        const  productosJSON = JSON.parse(listaProd)
+        const  productosJSON = await contenedor.getAll()
         const indice = productosJSON.findIndex(product=> product.id == id)
         productosJSON[indice].nombre = producto.nombre
         productosJSON[indice].precio = producto.precio
